@@ -46,7 +46,9 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         //crossAxisAlignment: CrossAxisAlignment.end,
-        children: transactions.map((e) => CardWidget(e.title, e.amount, e.dateTime)).toList(),
+        children: transactions
+            .map((e) => CardWidget(e.title, e.amount, e.dateTime))
+            .toList(),
       ),
     );
   }
