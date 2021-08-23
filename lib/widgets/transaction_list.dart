@@ -26,14 +26,14 @@ class TransactionList extends StatelessWidget {
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.green, width: 3),
                           borderRadius: BorderRadius.circular(20)),
-                      child: Text('\$' + transactions[index].amount.toString()),
+                      child: Text('\$' + transactions[index].amount.toStringAsFixed(2)),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(transactions[index].title,
                             style: TextStyle(fontWeight: FontWeight.bold)),
-                        Text(DateFormat().format(transactions[index].dateTime),
+                        Text(DateFormat('dd-MM-yyyy').format(transactions[index].dateTime),
                             style: TextStyle(color: Colors.grey)),
                       ],
                     ),
