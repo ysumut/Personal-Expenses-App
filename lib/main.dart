@@ -36,7 +36,9 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: TransactionScreen(),
+      body: SingleChildScrollView(
+        child: TransactionScreen(),
+      ),
     );
   }
 }

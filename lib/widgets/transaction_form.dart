@@ -22,6 +22,7 @@ class TransactionForm extends StatelessWidget {
             TextField(
               decoration: InputDecoration(labelText: 'Amount'),
               controller: amountController,
+              keyboardType: TextInputType.number,
             ),
             ElevatedButton.icon(
               onPressed: () => submitTx(titleController.text, amountController.text),

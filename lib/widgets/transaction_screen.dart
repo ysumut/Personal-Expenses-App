@@ -21,8 +21,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TransactionList(_transactions, _deleteTx),
         TransactionForm(_submitTx),
+        TransactionList(_transactions, _deleteTx),
       ],
     );
   }
