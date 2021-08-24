@@ -27,12 +27,12 @@ class _TransactionScreenState extends State<TransactionScreen> {
     );
   }
 
-  void _submitTx(String title, String amount) {
+  void _submitTx(String title, double amount) {
     setState(() {
       int id = (_transactions.length == 0) ? 1 : _transactions.last.id + 1;
 
       _transactions.add(
-        Transaction(id: id, title: title, amount: double.parse(amount))
+        Transaction(id: id, title: title, amount: amount)
       );
     });
   }
