@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import './models/transaction.dart';
 import './widgets/transaction_form.dart';
-import './widgets/transaction_screen.dart';
 import 'widgets/transaction_list.dart';
 
 void main() {
@@ -54,11 +53,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            TransactionList(_transactions, _deleteTx),
-          ],
-        ),
+        child: _transactions.length == 0 ?
+        Container(
+          height: 580,
+          margin: EdgeInsets.all(40),
+          child: Image.asset('assets/images/waiting.png', fit: BoxFit.cover,),
+        ) :
+        TransactionList(_transactions, _deleteTx),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
