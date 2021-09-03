@@ -12,6 +12,7 @@ class TransactionForm extends StatefulWidget {
 class _TransactionFormState extends State<TransactionForm> {
   final titleController = TextEditingController();
   final amountController = TextEditingController();
+  String errMsg = "";
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,8 @@ class _TransactionFormState extends State<TransactionForm> {
               label: Text('Submit'),
               icon: Icon(Icons.save),
               onPressed: _saveData,
-            )
+            ),
+            Container(child: Text(errMsg, style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),)),
           ],
         ),
       ),
@@ -48,13 +50,21 @@ class _TransactionFormState extends State<TransactionForm> {
       String title = titleController.text.trim();
       double amount = double.parse(amountController.text.trim());
 
-      if (title.isEmpty || amount <= 0 || amount > 999999999) return;
+      if (title.isEmpty || amount <= 0 || amount > 999999999) {
+        setState(() {
+          errMsg = 'Başlık boş olamaz, miktar 0 dan küçük veya 999999999\'dan büyük olamaz!';
+        });
+        return;
+      }
 
       widget.submitTx(title, amount);
       Navigator.of(context).pop();
     }
     catch(err) {
       print(err);
+      setState(() {
+        errMsg = 'Hatalı kayıt!';
+      });
     }
   }
 }
