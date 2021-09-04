@@ -1,36 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/transaction.dart';
-import '../models/chart_column.dart';
+import '../models/chart_bar.dart';
 
 class ChartScreen extends StatelessWidget {
-  final List<Transaction> _txList;
+  final List<Transaction> _lastWeekTransactions;
 
-  ChartScreen(this._txList);
+  ChartScreen(this._lastWeekTransactions);
 
   @override
   Widget build(BuildContext context) {
     List<dynamic> chartList = _createChartList();
-    double maxDailyAmount = chartList.map((e) => e.amount).reduce((a, b) => a > b ? a : b); // find max daily amount
+    double maxDailyAmount = chartList
+        .map((e) => e.amount)
+        .reduce((a, b) => a > b ? a : b); // find max daily amount
     double ratio = 100 / maxDailyAmount; // find ratio
 
     return Card(
       margin: EdgeInsets.all(15),
       elevation: 10,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: chartList
-            .map((e) => Column(
-                  children: [
-                    Text(e.amount.toStringAsFixed(2)),
-                    Container(
-                      margin: EdgeInsets.only(top: 5, bottom: 5),
-                      width: 20,
-                      height: e.amount * ratio,
-                      color: Colors.green,
-                    ),
-                    Text(e.date),
-                  ],
+            .map((e) => Container(
+                  width: 54,
+                  child: Column(
+                    children: [
+                      FittedBox(
+                        child: Text(
+                          '\$' + NumberFormat("#,##0.00").format(e.amount),
+                          style: TextStyle(fontSize: 11),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 5, bottom: 5),
+                        width: 15,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.green, width: 1),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              top: (100 - (e.amount * ratio)) as double),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(2),
+                            color: Colors.green,
+                          ),
+                        ),
+                      ),
+                      Text(e.date),
+                    ],
+                  ),
                 ))
             .toList(),
       ),
@@ -44,14 +65,17 @@ class ChartScreen extends StatelessWidget {
       var date = DateTime.now().subtract(Duration(days: i));
       var dateFormat = DateFormat.yMd().format;
 
-      double totalAmount = _txList
-          .map((e) => (dateFormat(e.dateTime) == dateFormat(date)) ? e.amount : 0) // find daily amount list by datetime
-          .fold(0, (previousValue, element) => previousValue + element); // sum daily amount list
+      double totalAmount = _lastWeekTransactions
+          .map((e) => (dateFormat(e.dateTime) == dateFormat(date))
+              ? e.amount
+              : 0) // find daily amount list by datetime
+          .fold(
+              0,
+              (previousValue, element) =>
+                  previousValue + element); // sum daily amount list
 
-      chartList.add(ChartColumn(
-          amount: totalAmount,
-          date: DateFormat.Md().format(date)
-      ));
+      chartList.add(
+          ChartBar(amount: totalAmount, date: DateFormat.E().format(date)));
     }
 
     return chartList;

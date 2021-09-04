@@ -19,30 +19,41 @@ class TransactionList extends StatelessWidget {
             return Card(
               elevation: 5,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    width: 70,
+                    height: 35,
+                    margin: EdgeInsets.symmetric(vertical: 10),
                     padding: EdgeInsets.all(5),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
-                      border: Border.all(color: Theme.of(context).accentColor, width: 3),
-                      borderRadius: BorderRadius.circular(15)),
-                    child: Text(
-                      '\$' + transactions[index].amount.toStringAsFixed(2),
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        color: Theme.of(context).accentColor,
+                        border: Border.all(
+                            color: Theme.of(context).accentColor, width: 3),
+                        borderRadius: BorderRadius.circular(15)),
+                    child: FittedBox(
+                      child: Text(
+                        '\$' + NumberFormat("#,##0.00").format(transactions[index].amount),
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(transactions[index].title,
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text(
-                          DateFormat.yMMMEd()
-                              .format(transactions[index].dateTime),
-                          style: TextStyle(color: Colors.grey)),
-                    ],
+                  Container(
+                    width: 110,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FittedBox(
+                          child: Text(transactions[index].title,
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        Text(
+                            DateFormat.yMMMEd()
+                                .format(transactions[index].dateTime),
+                            style: TextStyle(color: Colors.grey)),
+                      ],
+                    ),
                   ),
                   Column(
                     children: [
@@ -56,7 +67,8 @@ class TransactionList extends StatelessWidget {
                           'Delete',
                           style: TextStyle(fontSize: 12),
                         ),
-                        style: ElevatedButton.styleFrom(primary: Colors.redAccent),
+                        style:
+                            ElevatedButton.styleFrom(primary: Colors.redAccent),
                       )
                     ],
                   ),

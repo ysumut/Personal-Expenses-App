@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       int id = (_transactions.length == 0) ? 1 : _transactions.last.id + 1;
 
-      _transactions.add(Transaction(id: id, title: title, amount: amount));
+      _transactions.insert(0, Transaction(id: id, title: title, amount: amount));
     });
   }
 
@@ -97,10 +97,17 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
     } else {
-      return Column(children: [
-        ChartScreen(_transactions),
-        TransactionList(_transactions, _deleteTx),
-      ],);
+      return Column(
+        children: [
+          ChartScreen(_getLastWeekTransactions),
+          TransactionList(_transactions, _deleteTx),
+        ],
+      );
     }
+  }
+
+  List<Transaction> get _getLastWeekTransactions {
+    return _transactions.where(
+        (e) => e.dateTime.isAfter(DateTime.now().subtract(Duration(days: 7)))).toList();
   }
 }
