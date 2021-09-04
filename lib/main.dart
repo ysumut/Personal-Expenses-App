@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import './models/transaction.dart';
+import './widgets/chart_screen.dart';
 import './widgets/transaction_form.dart';
-import 'widgets/transaction_list.dart';
+import './widgets/transaction_list.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,10 +16,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: title,
       theme: ThemeData(
-        primarySwatch: Colors.purple,
-        accentColor: Colors.blue,
-        fontFamily: 'OpenSans'
-      ),
+          primarySwatch: Colors.purple,
+          accentColor: Colors.blue,
+          fontFamily: 'OpenSans'),
       home: MyHomePage(title: title),
     );
   }
@@ -53,13 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: SingleChildScrollView(
-        child: _transactions.length == 0 ?
-        Container(
-          height: 580,
-          margin: EdgeInsets.all(40),
-          child: Image.asset('assets/images/waiting.png', fit: BoxFit.cover,),
-        ) :
-        TransactionList(_transactions, _deleteTx),
+        child: _appScreen(),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -85,9 +79,28 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _openModal(BuildContext context) {
     showModalBottomSheet(
-        context: context,
-        builder: (_) {
-          return new TransactionForm(_submitTx);
-        });
+      context: context,
+      builder: (_) {
+        return new TransactionForm(_submitTx);
+      },
+    );
+  }
+
+  _appScreen() {
+    if (_transactions.length == 0) {
+      return Container(
+        height: 580,
+        margin: EdgeInsets.all(40),
+        child: Image.asset(
+          'assets/images/waiting.png',
+          fit: BoxFit.cover,
+        ),
+      );
+    } else {
+      return Column(children: [
+        ChartScreen(_transactions),
+        TransactionList(_transactions, _deleteTx),
+      ],);
+    }
   }
 }
