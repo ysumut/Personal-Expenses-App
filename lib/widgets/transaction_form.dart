@@ -82,6 +82,7 @@ class _TransactionFormState extends State<TransactionForm> {
       widget.submitTx(title, amount, this._selectedDate);
       Navigator.of(context).pop();
     } catch (err) {
+      print("ERROR: " + err.toString());
       setState(() {
         errMsg = 'Hatalı kayıt!';
       });
@@ -91,7 +92,7 @@ class _TransactionFormState extends State<TransactionForm> {
   void openDatePicker() {
     showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: _selectedDate,
       firstDate: DateTime(2000),
       lastDate: DateTime.now(),
     ).then((value) {

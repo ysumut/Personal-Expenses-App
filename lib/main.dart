@@ -64,7 +64,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _submitTx(String title, double amount, DateTime dateTime) {
     setState(() {
-      int id = (_transactions.length == 0) ? 1 : _transactions.last.id + 1;
+      int id;
+      if(_transactions.isEmpty) {
+        id = 1;
+      }
+      else {
+        int maxId = _transactions.reduce((a, b) => a.id > b.id ? a : b).id;
+        id = maxId + 1;
+      }
 
       _transactions.insert(0, Transaction(id: id, title: title, amount: amount, dateTime: dateTime));
     });

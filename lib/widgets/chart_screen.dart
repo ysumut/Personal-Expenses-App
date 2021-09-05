@@ -14,6 +14,8 @@ class ChartScreen extends StatelessWidget {
     double maxDailyAmount = chartList
         .reduce((a, b) => a.amount > b.amount ? a : b)
         .amount; // find max daily amount
+
+    maxDailyAmount = maxDailyAmount == 0 ? 100 : maxDailyAmount;
     double ratio = 100 / maxDailyAmount; // find ratio
 
     return Card(

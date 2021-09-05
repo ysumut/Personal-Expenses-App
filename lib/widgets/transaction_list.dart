@@ -22,7 +22,7 @@ class TransactionList extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Container(
-                    width: 70,
+                    width: 100,
                     height: 35,
                     margin: EdgeInsets.symmetric(vertical: 10),
                     padding: EdgeInsets.all(5),
@@ -33,14 +33,16 @@ class TransactionList extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15)),
                     child: FittedBox(
                       child: Text(
-                        '\$' + NumberFormat("#,##0.00").format(transactions[index].amount),
+                        '\$' +
+                            NumberFormat("#,##0.00")
+                                .format(transactions[index].amount),
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
                   Container(
-                    width: 110,
+                    width: 150,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -55,22 +57,12 @@ class TransactionList extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Column(
-                    children: [
-                      ElevatedButton.icon(
-                        onPressed: () => deleteTx(transactions[index].id),
-                        icon: Icon(
-                          Icons.delete,
-                          size: 20,
-                        ),
-                        label: Text(
-                          'Delete',
-                          style: TextStyle(fontSize: 12),
-                        ),
-                        style:
-                            ElevatedButton.styleFrom(primary: Colors.redAccent),
-                      )
-                    ],
+                  IconButton(
+                    onPressed: () => deleteTx(transactions[index].id),
+                    icon: Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
                   ),
                 ],
               ),
