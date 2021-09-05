@@ -35,9 +35,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [
-    Transaction(id: 1, title: 'Clothes', amount: 48.99),
-    Transaction(id: 2, title: 'Food', amount: 85.42),
-    Transaction(id: 3, title: 'Holiday', amount: 320.75),
+    Transaction(id: 1, title: 'Clothes', amount: 48.99, dateTime: DateTime.now()),
+    Transaction(id: 2, title: 'Food', amount: 85.42, dateTime: DateTime.now()),
+    Transaction(id: 3, title: 'Holiday', amount: 320.75, dateTime: DateTime.now()),
   ];
 
   @override
@@ -62,11 +62,11 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _submitTx(String title, double amount) {
+  void _submitTx(String title, double amount, DateTime dateTime) {
     setState(() {
       int id = (_transactions.length == 0) ? 1 : _transactions.last.id + 1;
 
-      _transactions.insert(0, Transaction(id: id, title: title, amount: amount));
+      _transactions.insert(0, Transaction(id: id, title: title, amount: amount, dateTime: dateTime));
     });
   }
 

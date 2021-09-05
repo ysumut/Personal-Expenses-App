@@ -12,8 +12,8 @@ class ChartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     List<dynamic> chartList = _createChartList();
     double maxDailyAmount = chartList
-        .map((e) => e.amount)
-        .reduce((a, b) => a > b ? a : b); // find max daily amount
+        .reduce((a, b) => a.amount > b.amount ? a : b)
+        .amount; // find max daily amount
     double ratio = 100 / maxDailyAmount; // find ratio
 
     return Card(
@@ -65,14 +65,10 @@ class ChartScreen extends StatelessWidget {
       var date = DateTime.now().subtract(Duration(days: i));
       var dateFormat = DateFormat.yMd().format;
 
-      double totalAmount = _lastWeekTransactions
-          .map((e) => (dateFormat(e.dateTime) == dateFormat(date))
-              ? e.amount
-              : 0) // find daily amount list by datetime
-          .fold(
-              0,
-              (previousValue, element) =>
-                  previousValue + element); // sum daily amount list
+      double totalAmount = 0;
+      _lastWeekTransactions.forEach((e) {
+        if (dateFormat(e.dateTime) == dateFormat(date)) totalAmount += e.amount;
+      }); // sum daily amount list
 
       chartList.add(
           ChartBar(amount: totalAmount, date: DateFormat.E().format(date)));
