@@ -1,20 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../models/transaction.dart';
 
 class TransactionForm extends StatefulWidget {
-  final Function(String, double, DateTime) submitTx;
+  final Function(Transaction) saveTx;
+  final Transaction? transaction;
 
-  TransactionForm(this.submitTx);
+  TransactionForm(this.saveTx, {this.transaction});
 
   @override
-  _TransactionFormState createState() => _TransactionFormState();
+  _TransactionFormState createState() => _TransactionFormState(transaction: transaction);
 }
 
 class _TransactionFormState extends State<TransactionForm> {
-  final titleController = TextEditingController();
-  final amountController = TextEditingController();
+  final _titleController = TextEditingController();
+  final _amountController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
-  String errMsg = "";
+  String _errMsg = "";
+  Transaction? transaction;
+
+  _TransactionFormState({this.transaction}) {
+    if (transaction != null) {
+      _titleController.text = transaction!.title;
+      _amountController.text = transaction!.amount.toStringAsFixed(2);
+      _selectedDate = transaction!.dateTime;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +37,12 @@ class _TransactionFormState extends State<TransactionForm> {
             children: [
               TextField(
                 decoration: InputDecoration(labelText: 'Title'),
-                controller: titleController,
+                controller: _titleController,
                 onSubmitted: (_) => _saveData(),
               ),
               TextField(
                 decoration: InputDecoration(labelText: 'Amount'),
-                controller: amountController,
+                controller: _amountController,
                 keyboardType: TextInputType.number,
                 onSubmitted: (_) => _saveData(),
               ),
@@ -55,7 +66,7 @@ class _TransactionFormState extends State<TransactionForm> {
               ),
               Container(
                   child: Text(
-                errMsg,
+                _errMsg,
                 style:
                     TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
               )),
@@ -68,23 +79,36 @@ class _TransactionFormState extends State<TransactionForm> {
 
   void _saveData() {
     try {
-      String title = titleController.text.trim();
-      double amount = double.parse(amountController.text.trim());
+      String title = _titleController.text.trim();
+      double amount = double.parse(_amountController.text.trim());
 
-      if (title.isEmpty || amount <= 0 || amount > 999999999) {
+      if (title.isEmpty ||
+          title.length > 50 ||
+          amount <= 0 ||
+          amount > 999999999) {
         setState(() {
-          errMsg =
-              'Başlık boş olamaz, miktar 0 dan küçük veya 999999999\'dan büyük olamaz!';
+          _errMsg =
+              'Başlık boş veya 50 karakterden büyük olamaz, miktar 0 dan küçük veya 999999999\'dan büyük olamaz!';
         });
         return;
       }
 
-      widget.submitTx(title, amount, this._selectedDate);
+      int id = 0;
+      if (widget.transaction != null) {
+        id = widget.transaction!.id;
+      }
+
+      widget.saveTx(Transaction(
+              id: id,
+              title: title,
+              amount: amount,
+              dateTime: _selectedDate) // id will change in submitTx
+          );
       Navigator.of(context).pop();
     } catch (err) {
       print("ERROR: " + err.toString());
       setState(() {
-        errMsg = 'Hatalı kayıt!';
+        _errMsg = 'Hatalı kayıt!';
       });
     }
   }

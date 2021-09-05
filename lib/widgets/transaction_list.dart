@@ -1,20 +1,21 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import './transaction_form.dart';
 import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
-  final List<Transaction> transactions;
-  final Function(int) deleteTx;
+  final List<Transaction> _transactions;
+  final Function(Transaction) _editTx;
+  final Function(int) _deleteTx;
 
-  TransactionList(this.transactions, this.deleteTx);
+  TransactionList(this._transactions, this._editTx, this._deleteTx);
 
   @override
   Widget build(BuildContext context) {
     return Container(
         height: 580,
         child: ListView.builder(
-          itemCount: transactions.length,
+          itemCount: _transactions.length,
           itemBuilder: (ctx, index) {
             return Card(
               elevation: 5,
@@ -35,7 +36,7 @@ class TransactionList extends StatelessWidget {
                       child: Text(
                         '\$' +
                             NumberFormat("#,##0.00")
-                                .format(transactions[index].amount),
+                                .format(_transactions[index].amount),
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),
@@ -47,27 +48,51 @@ class TransactionList extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         FittedBox(
-                          child: Text(transactions[index].title,
+                          child: Text(_transactions[index].title,
                               style: TextStyle(fontWeight: FontWeight.bold)),
                         ),
                         Text(
                             DateFormat.yMMMEd()
-                                .format(transactions[index].dateTime),
+                                .format(_transactions[index].dateTime),
                             style: TextStyle(color: Colors.grey)),
                       ],
                     ),
                   ),
-                  IconButton(
-                    onPressed: () => deleteTx(transactions[index].id),
-                    icon: Icon(
-                      Icons.delete,
-                      color: Colors.red,
-                    ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () =>
+                            _openModalForEdit(context, _transactions[index]),
+                        icon: Icon(
+                          Icons.edit,
+                          color: Colors.green,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => _deleteTx(_transactions[index].id),
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             );
           },
         ));
+  }
+
+  void _openModalForEdit(BuildContext context, Transaction t) {
+    showModalBottomSheet(
+      context: context,
+      builder: (_) {
+        return new TransactionForm(
+          _editTx,
+          transaction: t,
+        );
+      },
+    );
   }
 }

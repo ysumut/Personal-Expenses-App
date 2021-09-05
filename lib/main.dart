@@ -62,18 +62,26 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _submitTx(String title, double amount, DateTime dateTime) {
+  void _submitTx(Transaction newTx) {
     setState(() {
-      int id;
       if(_transactions.isEmpty) {
-        id = 1;
+        newTx.id = 1;
       }
       else {
         int maxId = _transactions.reduce((a, b) => a.id > b.id ? a : b).id;
-        id = maxId + 1;
+        newTx.id = maxId + 1;
       }
 
-      _transactions.insert(0, Transaction(id: id, title: title, amount: amount, dateTime: dateTime));
+      _transactions.insert(0, newTx);
+    });
+  }
+
+  void _editTx(Transaction newTx) {
+    setState(() {
+      Transaction oldTx = _transactions.firstWhere((e) => e.id == newTx.id);
+      oldTx.title = newTx.title;
+      oldTx.amount = newTx.amount;
+      oldTx.dateTime = newTx.dateTime;
     });
   }
 
@@ -107,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
       return Column(
         children: [
           ChartScreen(_getLastWeekTransactions),
-          TransactionList(_transactions, _deleteTx),
+          TransactionList(_transactions, _editTx, _deleteTx),
         ],
       );
     }
