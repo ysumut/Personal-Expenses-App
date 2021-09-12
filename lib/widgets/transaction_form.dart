@@ -49,10 +49,11 @@ class _TransactionFormState extends State<TransactionForm> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text('Picked Date: ' +
-                      DateFormat('dd/MM/yyyy').format(_selectedDate)),
                   TextButton.icon(
-                    label: Text('Pick'),
+                    label: Text(
+                      DateFormat('dd/MM/yyyy').format(_selectedDate),
+                      style: TextStyle(color: Colors.black),
+                    ),
                     icon: Icon(Icons.date_range),
                     onPressed: openDatePicker,
                   ),
