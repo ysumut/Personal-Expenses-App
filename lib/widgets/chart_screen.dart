@@ -19,7 +19,7 @@ class ChartScreen extends StatelessWidget {
     double ratio = 100 / maxDailyAmount; // find ratio
 
     return Card(
-      margin: EdgeInsets.all(15),
+      margin: EdgeInsets.all(5),
       elevation: 10,
       child: Column(
         children: [
@@ -36,7 +36,7 @@ class ChartScreen extends StatelessWidget {
                         children: [
                           FittedBox(
                             child: Text(
-                              '\$' + NumberFormat("#,##0.00").format(e.amount),
+                              '\$' + NumberFormat("#,##0").format(e.amount),
                               style: TextStyle(fontSize: 11),
                             ),
                           ),

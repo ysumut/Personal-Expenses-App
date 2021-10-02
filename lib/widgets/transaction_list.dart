@@ -13,7 +13,7 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 580,
+        height: 400,
         child: ListView.builder(
           itemCount: _transactions.length,
           itemBuilder: (ctx, index) {
@@ -81,7 +81,8 @@ class TransactionList extends StatelessWidget {
               ),
             );
           },
-        ));
+        )
+    );
   }
 
   void _openModalForEdit(BuildContext context, Transaction t) {
