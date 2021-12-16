@@ -4,7 +4,7 @@ import './transaction_form.dart';
 import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
-  final List<Transaction> _transactions;
+  List<Transaction> _transactions;
   final Function(Transaction) _editTx;
   final Function(int) _deleteTx;
 
@@ -12,6 +12,8 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _transactions.sort((a,b) => a.dateTime.isBefore(b.dateTime) ? 1 : 0);
+
     return Container(
         height: 400,
         child: ListView.builder(
