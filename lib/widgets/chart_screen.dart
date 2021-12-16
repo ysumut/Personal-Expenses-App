@@ -71,10 +71,10 @@ class ChartScreen extends StatelessWidget {
 
   _createChartList() {
     var chartList = [];
+    var dateFormat = DateFormat.yMd().format;
 
     for (var i = 6; i >= 0; i--) {
       var date = DateTime.now().subtract(Duration(days: i));
-      var dateFormat = DateFormat.yMd().format;
 
       double totalAmount = 0;
       _lastWeekTransactions.forEach((e) {
