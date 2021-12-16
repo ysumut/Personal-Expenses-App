@@ -25,7 +25,10 @@ class ChartScreen extends StatelessWidget {
         children: [
           Container(
             margin: EdgeInsets.all(10),
-            child: Text('Last Week', style: TextStyle(fontSize: 20),),
+            child: Text(
+              'Last Week',
+              style: TextStyle(fontSize: 20),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -50,8 +53,7 @@ class ChartScreen extends StatelessWidget {
                             ),
                             child: Container(
                               margin: EdgeInsets.only(
-                                  top: _calculateMargin(e.amount, ratio)
-                              ),
+                                  top: _calculateMargin(e.amount, ratio)),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(2),
                                 color: Colors.green,
@@ -87,9 +89,9 @@ class ChartScreen extends StatelessWidget {
 
     return chartList;
   }
-  
+
   double _calculateMargin(amount, ratio) {
     double result = (100 - (amount * ratio)) as double;
     return (result < 0) ? 0 : result;
-  } 
+  }
 }

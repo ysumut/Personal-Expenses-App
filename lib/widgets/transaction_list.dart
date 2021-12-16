@@ -4,7 +4,7 @@ import './transaction_form.dart';
 import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
-  List<Transaction> _transactions;
+  final List<Transaction> _transactions;
   final Function(Transaction) _editTx;
   final Function(int) _deleteTx;
 
@@ -12,78 +12,75 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _transactions.sort((a,b) => a.dateTime.isBefore(b.dateTime) ? 1 : 0);
+    _transactions.sort((a, b) => a.dateTime.isBefore(b.dateTime) ? 1 : 0);
 
-    return Container(
-        height: 400,
-        child: ListView.builder(
-          itemCount: _transactions.length,
-          itemBuilder: (ctx, index) {
-            return Card(
-              elevation: 5,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return ListView.builder(
+      itemCount: _transactions.length,
+      itemBuilder: (ctx, index) {
+        return Card(
+          elevation: 5,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                width: 100,
+                height: 35,
+                margin: EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).accentColor,
+                    border: Border.all(
+                        color: Theme.of(context).accentColor, width: 3),
+                    borderRadius: BorderRadius.circular(15)),
+                child: FittedBox(
+                  child: Text(
+                    '\$' +
+                        NumberFormat("#,##0.00")
+                            .format(_transactions[index].amount),
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              Container(
+                width: 150,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FittedBox(
+                      child: Text(_transactions[index].title,
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                    ),
+                    Text(
+                        DateFormat.yMMMEd()
+                            .format(_transactions[index].dateTime),
+                        style: TextStyle(color: Colors.grey)),
+                  ],
+                ),
+              ),
+              Row(
                 children: [
-                  Container(
-                    width: 100,
-                    height: 35,
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).accentColor,
-                        border: Border.all(
-                            color: Theme.of(context).accentColor, width: 3),
-                        borderRadius: BorderRadius.circular(15)),
-                    child: FittedBox(
-                      child: Text(
-                        '\$' +
-                            NumberFormat("#,##0.00")
-                                .format(_transactions[index].amount),
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
+                  IconButton(
+                    onPressed: () =>
+                        _openModalForEdit(context, _transactions[index]),
+                    icon: Icon(
+                      Icons.edit,
+                      color: Colors.green,
                     ),
                   ),
-                  Container(
-                    width: 150,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        FittedBox(
-                          child: Text(_transactions[index].title,
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Text(
-                            DateFormat.yMMMEd()
-                                .format(_transactions[index].dateTime),
-                            style: TextStyle(color: Colors.grey)),
-                      ],
+                  IconButton(
+                    onPressed: () => _deleteTx(_transactions[index].id),
+                    icon: Icon(
+                      Icons.delete,
+                      color: Colors.red,
                     ),
-                  ),
-                  Row(
-                    children: [
-                      IconButton(
-                        onPressed: () =>
-                            _openModalForEdit(context, _transactions[index]),
-                        icon: Icon(
-                          Icons.edit,
-                          color: Colors.green,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () => _deleteTx(_transactions[index].id),
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.red,
-                        ),
-                      ),
-                    ],
                   ),
                 ],
               ),
-            );
-          },
-        )
+            ],
+          ),
+        );
+      },
     );
   }
 

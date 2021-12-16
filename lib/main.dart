@@ -38,17 +38,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: Text(widget.title),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _openModal(context),
+        ),
+      ],
+    );
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _openModal(context),
-          ),
-        ],
-      ),
-      body: _appScreen(),
+      appBar: appBar,
+      body: _appScreen(appBar),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () => _openModal(context),
@@ -58,10 +60,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _submitTx(Transaction newTx) {
     setState(() {
-      if(_transactions.isEmpty) {
+      if (_transactions.isEmpty) {
         newTx.id = 1;
-      }
-      else {
+      } else {
         int maxId = _transactions.reduce((a, b) => a.id > b.id ? a : b).id;
         newTx.id = maxId + 1;
       }
@@ -95,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _appScreen() {
+  _appScreen(AppBar appBar) {
     if (_transactions.length == 0) {
       return Container(
         height: 580,
@@ -106,17 +107,29 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
     } else {
+      double height = MediaQuery.of(context).size.height -
+          MediaQuery.of(context).padding.top -
+          appBar.preferredSize.height;
+
       return Column(
         children: [
-          ChartScreen(_getLastWeekTransactions),
-          TransactionList(_transactions, _editTx, _deleteTx),
+          Container(
+            height: height * 0.4,
+            child: ChartScreen(_getLastWeekTransactions),
+          ),
+          Container(
+            height: height * 0.6,
+            child: TransactionList(_transactions, _editTx, _deleteTx),
+          ),
         ],
       );
     }
   }
 
   List<Transaction> get _getLastWeekTransactions {
-    return _transactions.where(
-        (e) => e.dateTime.isAfter(DateTime.now().subtract(Duration(days: 7)))).toList();
+    return _transactions
+        .where((e) =>
+            e.dateTime.isAfter(DateTime.now().subtract(Duration(days: 7))))
+        .toList();
   }
 }
