@@ -9,7 +9,8 @@ class TransactionForm extends StatefulWidget {
   TransactionForm(this.saveTx, {this.transaction});
 
   @override
-  _TransactionFormState createState() => _TransactionFormState(transaction: transaction);
+  _TransactionFormState createState() =>
+      _TransactionFormState(transaction: transaction);
 }
 
 class _TransactionFormState extends State<TransactionForm> {
@@ -29,22 +30,25 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SingleChildScrollView(
       child: Card(
         child: Container(
-          padding: EdgeInsets.all(20),
+          margin: EdgeInsets.only(
+            top: 10,
+            right: 10,
+            left: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
           child: Column(
             children: [
               TextField(
                 decoration: InputDecoration(labelText: 'Title'),
                 controller: _titleController,
-                onSubmitted: (_) => _saveData(),
               ),
               TextField(
                 decoration: InputDecoration(labelText: 'Amount'),
                 controller: _amountController,
                 keyboardType: TextInputType.number,
-                onSubmitted: (_) => _saveData(),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -68,8 +72,7 @@ class _TransactionFormState extends State<TransactionForm> {
               Container(
                   child: Text(
                 _errMsg,
-                style:
-                    TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
               )),
             ],
           ),
