@@ -96,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _appScreen(AppBar appBar) {
+  Widget _appScreen(AppBar appBar) {
     if (_transactions.length == 0) {
       return Container(
         height: 580,
