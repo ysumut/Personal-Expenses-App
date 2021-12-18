@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:personal_expenses_app/models/transaction.dart';
@@ -17,6 +19,22 @@ class TransactionItem extends StatefulWidget {
 }
 
 class _TransactionItemState extends State<TransactionItem> {
+  late Color _randomColor;
+
+  @override
+  void initState() {
+    const availableColors = [
+      Colors.red,
+      Colors.blue,
+      Colors.green,
+      Colors.black,
+      Colors.purple,
+    ];
+    _randomColor = availableColors[Random().nextInt(availableColors.length)];
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -30,16 +48,18 @@ class _TransactionItemState extends State<TransactionItem> {
             margin: EdgeInsets.symmetric(vertical: 10),
             padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
-                color: Theme.of(context).accentColor,
+                color: _randomColor,
                 border:
-                    Border.all(color: Theme.of(context).accentColor, width: 3),
+                    Border.all(color: _randomColor, width: 3),
                 borderRadius: BorderRadius.circular(15)),
             child: FittedBox(
               child: Text(
                 '\$' +
                     NumberFormat("#,##0.00").format(widget._transaction.amount),
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    ),
               ),
             ),
           ),

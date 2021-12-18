@@ -13,11 +13,15 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     _transactions.sort((a, b) => a.dateTime.isBefore(b.dateTime) ? 1 : 0);
 
-    return ListView.builder(
-      itemCount: _transactions.length,
-      itemBuilder: (ctx, index) {
-        return TransactionItem(_transactions[index], _editTx, _deleteTx);
-      },
+    return ListView(
+      children: _transactions
+          .map((tx) => TransactionItem(
+                tx,
+                _editTx,
+                _deleteTx,
+                key: ValueKey(tx.id),
+              ))
+          .toList(),
     );
   }
 }
